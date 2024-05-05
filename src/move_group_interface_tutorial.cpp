@@ -89,8 +89,9 @@ int main(int argc, char** argv)
 
   // ******************************************************************
   // ************************* CHANGE THE PLANNER *********************
-  move_group.setPlannerId("RRTstarkConfigDefault");
-  move_group.setPlanningTime(10.0);
+  move_group.setEndEffectorLink("panda_hand");
+  // move_group.setPlannerId("RRTstarkConfigDefault");
+  // move_group.setPlanningTime(10.0);
   // ******************************************************************
 
   // ******************************************************************
@@ -230,7 +231,7 @@ int main(int argc, char** argv)
   // Let's specify a path constraint and a pose goal for our group.
   // First define the path constraint.
   moveit_msgs::msg::OrientationConstraint ocm;
-  ocm.link_name = "panda_link7";
+  ocm.link_name = "panda_hand";
   ocm.header.frame_id = "panda_link0";
   ocm.orientation.w = 1.0;
   ocm.absolute_x_axis_tolerance = 0.1;
@@ -241,6 +242,7 @@ int main(int argc, char** argv)
   // Now, set it as the path constraint for the group.
   moveit_msgs::msg::Constraints test_constraints;
   test_constraints.orientation_constraints.push_back(ocm);
+  move_group.clearPathConstraints();
   move_group.setPathConstraints(test_constraints);
 
   // Enforce Planning in Joint Space
@@ -264,17 +266,18 @@ int main(int argc, char** argv)
   // satisfies the path constraints. So we need to set the start
   // state to a new pose.
   moveit::core::RobotState start_state(*move_group.getCurrentState());
-  geometry_msgs::msg::Pose start_pose2;
-  start_pose2.orientation.w = 1.0;
-  start_pose2.position.x = 0.55;
-  start_pose2.position.y = -0.05;
-  start_pose2.position.z = 0.8;
-  start_state.setFromIK(joint_model_group, start_pose2);
+  geometry_msgs::msg::Pose start_pose2_;
+  start_pose2_.orientation.w = 1.0;
+  start_pose2_.position.x = 0.55;
+  start_pose2_.position.y = -0.05;
+  start_pose2_.position.z = 0.8;
+  start_state.setFromIK(joint_model_group, start_pose2_);
   move_group.setStartState(start_state);
 
   // Now, we will plan to the earlier pose target from the new
   // start state that we just created.
-  move_group.setPoseTarget(target_pose1);
+  move_group.clearPoseTargets(); // <-- if you are using different end effectors, remember to clear all the pose targets!
+  move_group.setPoseTarget(target_pose1, "panda_link8");
 
   // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
   // Let's increase the planning time from the default 5 seconds to be sure the planner has enough time to succeed.
@@ -285,7 +288,7 @@ int main(int argc, char** argv)
 
   // Visualize the plan in RViz:
   visual_tools.deleteAllMarkers();
-  visual_tools.publishAxisLabeled(start_pose2, "start");
+  visual_tools.publishAxisLabeled(start_pose2_, "start");
   visual_tools.publishAxisLabeled(target_pose1, "goal");
   visual_tools.publishText(text_pose, "Constrained_Goal", rvt::WHITE, rvt::XLARGE);
   visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
