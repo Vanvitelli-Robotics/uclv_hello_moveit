@@ -10,6 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(moveit_visual_tools REQUIRED)
+find_package(moveit_ros_planning REQUIRED) #<-- to use robot model
 
 
 add_executable(hello_moveit src/hello_moveit.cpp)
@@ -47,7 +48,11 @@ ament_target_dependencies(
   "moveit_visual_tools"
 )
 
-install(TARGETS hello_moveit planning_aroud_objects move_group_interface_tutorial
+add_executable(robot_model_and_robot_state src/robot_model_and_robot_state_tutorial.cpp)
+ament_target_dependencies(robot_model_and_robot_state 
+      "rclcpp"  "moveit_ros_planning" )
+
+install(TARGETS hello_moveit planning_aroud_objects move_group_interface_tutorial robot_model_and_robot_state
   DESTINATION lib/${PROJECT_NAME})
 
 ########## INSTALL the launch ############
