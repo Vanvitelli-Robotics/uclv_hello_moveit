@@ -34,8 +34,8 @@
 
 /* Author: Sachin Chitta, Dave Coleman, Mike Lautman */
 
-#include <moveit/move_group_interface/move_group_interface.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include <moveit/move_group_interface/move_group_interface.hpp>
+#include <moveit/planning_scene_interface/planning_scene_interface.hpp>
 
 #include <moveit_msgs/msg/display_robot_state.hpp>
 #include <moveit_msgs/msg/display_trajectory.hpp>
@@ -89,9 +89,11 @@ int main(int argc, char** argv)
 
   // ******************************************************************
   // ************************* CHANGE THE PLANNER *********************
-  move_group.setEndEffectorLink("panda_hand");
+  const std::string EE_LINK = "panda_link8";
+  // const std::string EE_LINK = "panda_hand";
+  // move_group.setEndEffectorLink(EE_LINK);
   // move_group.setPlannerId("RRTstarkConfigDefault");
-  // move_group.setPlanningTime(10.0);
+  // move_group.setPlanningTime(50);
   // ******************************************************************
 
   // ******************************************************************
@@ -121,6 +123,11 @@ int main(int argc, char** argv)
 
   // We can also print the name of the end-effector link for this group.
   RCLCPP_INFO(LOGGER, "End effector link: %s", move_group.getEndEffectorLink().c_str());
+
+  // We can get a list of all the groups in the robot:
+  RCLCPP_INFO(LOGGER, "Available Planning Groups:");
+  std::copy(move_group.getJointModelGroupNames().begin(), move_group.getJointModelGroupNames().end(),
+            std::ostream_iterator<std::string>(std::cout, ", "));
 
   // Start the demo
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -157,7 +164,7 @@ int main(int argc, char** argv)
   RCLCPP_INFO(LOGGER, "Visualizing plan 1 as trajectory line");
   visual_tools.publishAxisLabeled(target_pose1, "pose1");
   visual_tools.publishText(text_pose, "Pose_Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
   // ******************************************************************
@@ -214,7 +221,7 @@ int main(int argc, char** argv)
   // Visualize the plan in RViz:
   visual_tools.deleteAllMarkers();
   visual_tools.publishText(text_pose, "Joint_Space_Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
   // ******************************************************************
@@ -225,13 +232,13 @@ int main(int argc, char** argv)
   // A good result depends on the chosed planner and on the planning time
   // The planning time higly depends on the harware (if you are on a virtual machine it could be huge!)
   // For this reason the actual plan call code is commented
-  /* // <<<<<< ####COMMENT START####
+  // <<<<<< ####COMMENT START####
   //
   // Path constraints can easily be specified for a link on the robot.
   // Let's specify a path constraint and a pose goal for our group.
   // First define the path constraint.
   moveit_msgs::msg::OrientationConstraint ocm;
-  ocm.link_name = "panda_hand";
+  ocm.link_name = EE_LINK;
   ocm.header.frame_id = "panda_link0";
   ocm.orientation.w = 1.0;
   ocm.absolute_x_axis_tolerance = 0.1;
@@ -271,7 +278,7 @@ int main(int argc, char** argv)
   start_pose2_.position.x = 0.55;
   start_pose2_.position.y = -0.05;
   start_pose2_.position.z = 0.8;
-  start_state.setFromIK(joint_model_group, start_pose2_);
+  start_state.setFromIK(joint_model_group, start_pose2_); // <-- here you need some parameters to be set on the node
   move_group.setStartState(start_state);
 
   // Now, we will plan to the earlier pose target from the new
@@ -281,7 +288,8 @@ int main(int argc, char** argv)
 
   // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
   // Let's increase the planning time from the default 5 seconds to be sure the planner has enough time to succeed.
-  move_group.setPlanningTime(10.0);
+  double previous_planning_time = move_group.getPlanningTime();
+  move_group.setPlanningTime(100.0);
 
   success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
   RCLCPP_INFO(LOGGER, "Visualizing plan 3 (constraints) %s", success ? "" : "FAILED");
@@ -291,13 +299,14 @@ int main(int argc, char** argv)
   visual_tools.publishAxisLabeled(start_pose2_, "start");
   visual_tools.publishAxisLabeled(target_pose1, "goal");
   visual_tools.publishText(text_pose, "Constrained_Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
   // When done with the path constraint, be sure to clear it.
   move_group.clearPathConstraints();
-  */ // <<<<<< ####COMMENT END####
+  move_group.setPlanningTime(previous_planning_time);
+  // <<<<<< ####COMMENT END####
   // ************ END Planning with Path Constraints ***********
   // ******************************************************************
 
@@ -331,13 +340,10 @@ int main(int argc, char** argv)
 
   // We want the Cartesian path to be interpolated at a resolution of 1 cm
   // which is why we will specify 0.01 as the max step in Cartesian
-  // translation.  We will specify the jump threshold as 0.0, effectively disabling it.
-  // Warning - disabling the jump threshold while operating real hardware can cause
-  // large unpredictable motions of redundant joints and could be a safety issue
+  // translation.
   moveit_msgs::msg::RobotTrajectory trajectory;
-  const double jump_threshold = 0.0;
   const double eef_step = 0.01;
-  double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
+  double fraction = move_group.computeCartesianPath(waypoints, eef_step, trajectory);
   RCLCPP_INFO(LOGGER, "Visualizing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
 
   // ******************************************************************
@@ -381,7 +387,7 @@ int main(int argc, char** argv)
   visual_tools.deleteAllMarkers();
   visual_tools.publishText(text_pose, "Clear_Goal", rvt::WHITE, rvt::XLARGE);
   visual_tools.publishAxisLabeled(another_pose, "goal");
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
   // ******************************************************************
@@ -440,7 +446,7 @@ int main(int argc, char** argv)
   // ******************************************************************
   // ************************* JUST TO VISUALIZE **********************
   visual_tools.publishText(text_pose, "Obstacle_Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window once the plan is complete");
   // ******************************************************************
@@ -501,7 +507,7 @@ int main(int argc, char** argv)
 
   // ******************************************************************
   // ************************* JUST TO VISUALIZE **********************
-  visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  visual_tools.publishTrajectoryLine(my_plan.trajectory, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window once the plan is complete");
   // ******************************************************************

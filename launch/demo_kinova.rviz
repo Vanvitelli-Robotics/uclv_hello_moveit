@@ -1,13 +1,11 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 78
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /Global Options1
-        - /Status1
+      Expanded: ~
       Splitter Ratio: 0.5
-    Tree Height: 463
+    Tree Height: 140
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -26,25 +24,6 @@ Panels:
     Name: Time
     SyncMode: 0
     SyncSource: ""
-  - Class: moveit_task_constructor/Motion Planning Tasks
-    Global Settings:
-      Task View Settings:
-        Old task handling: Keep
-        Show Computation Times: true
-        Task Expansion: All Expanded
-    Name: Motion Planning Tasks
-    Tasks View:
-      property_splitter:
-        - 179
-        - 117
-      solution_sorting:
-        column: 0
-        order: 1
-      solutions_splitter:
-        - 48
-        - 48
-      solutions_view_columns: ~
-      tasks_view_columns: ~
   - Class: rviz_visual_tools/RvizVisualToolsGui
     Name: RvizVisualToolsGui
 Visualization Manager:
@@ -99,72 +78,106 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          panda_hand:
+          base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_leftfinger:
+          bracelet_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link0:
+          end_effector_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          forearm_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link1:
+          half_arm_1_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link2:
+          half_arm_2_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link3:
+          robotiq_85_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link4:
+          robotiq_85_left_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link5:
+          robotiq_85_left_finger_tip_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link6:
+          robotiq_85_left_inner_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link7:
+          robotiq_85_left_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link8:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_rightfinger:
+          robotiq_85_right_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
+          robotiq_85_right_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robotiq_85_right_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robotiq_85_right_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          shoulder_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          spherical_wrist_1_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          spherical_wrist_2_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
         Loop Animation: true
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
         Show Robot Collision: false
         Show Robot Visual: true
         Show Trail: false
-        State Display Time: 0.5s
+        State Display Time: 0.05s
         Trail Step Size: 1
         Trajectory Topic: /display_planned_path
         Use Sim Time: false
@@ -181,7 +194,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: hand
+        Planning Group: manipulator
         Query Goal State: false
         Query Start State: false
         Show Workspace: false
@@ -204,65 +217,99 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          panda_hand:
+          base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_leftfinger:
+          bracelet_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link0:
+          end_effector_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          forearm_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link1:
+          half_arm_1_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link2:
+          half_arm_2_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link3:
+          robotiq_85_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link4:
+          robotiq_85_left_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link5:
+          robotiq_85_left_finger_tip_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link6:
+          robotiq_85_left_inner_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link7:
+          robotiq_85_left_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          panda_link8:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          panda_rightfinger:
+          robotiq_85_right_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
+          robotiq_85_right_finger_tip_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robotiq_85_right_inner_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robotiq_85_right_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          shoulder_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          spherical_wrist_1_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          spherical_wrist_2_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
         Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true
@@ -272,21 +319,18 @@ Visualization Manager:
       Enabled: true
       Name: MarkerArray
       Namespaces:
-        Path: true
-        Sphere: true
-        Text: true
-        pose1: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /move_group_tutorial
+        Value: /rviz_visual_tools
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: panda_link0
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -329,7 +373,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.493516206741333
+      Distance: 10
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -344,24 +388,22 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4903981387615204
+      Pitch: 0.785398006439209
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.093581676483154
+      Yaw: 0.785398006439209
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 944
+  Height: 861
   Hide Left Dock: false
-  Hide Right Dock: false
-  Motion Planning Tasks:
-    collapsed: false
+  Hide Right Dock: true
   MotionPlanning:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001ad00000312fc020000000dfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000025a000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000002a004d006f00740069006f006e00200050006c0061006e006e0069006e00670020005400610073006b007300000001d800000115000000e700fffffffb00000024005200760069007a00560069007300750061006c0054006f006f006c0073004700750069010000029d000000b20000004100fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000165000001880000017d00ffffff000000010000010f000002b0fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000002b0000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003efc0100000002fb0000000800540069006d0065010000000000000738000002fb00fffffffb0000000800540069006d00650100000000000004500000000000000000000005850000031200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001ee000002bdfc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003f000000cc000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000024005200760069007a00560069007300750061006c0054006f006f006c00730047007500690100000111000000440000004400fffffffb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004400fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000015b000001a10000019600ffffff000000010000010f000002bdfc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003f000002bd000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004b00000003cfc0100000002fb0000000800540069006d00650100000000000004b00000026f00fffffffb0000000800540069006d00650100000000000004500000000000000000000002bc000002bd00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RvizVisualToolsGui:
     collapsed: false
   Selection:
@@ -371,7 +413,7 @@ Window Geometry:
   Tool Properties:
     collapsed: false
   Views:
-    collapsed: false
-  Width: 1848
-  X: 70
-  Y: 27
+    collapsed: true
+  Width: 1200
+  X: 1101
+  Y: 129

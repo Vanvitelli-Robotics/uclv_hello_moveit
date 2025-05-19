@@ -14,9 +14,6 @@ def generate_launch_description():
         .planning_scene_monitor(
             publish_robot_description=True, publish_robot_description_semantic=True
         )
-        .planning_pipelines(
-            pipelines=["ompl"]
-        )
         .to_moveit_configs()
     )
     # Start the actual move_group node/action server
@@ -29,12 +26,11 @@ def generate_launch_description():
 
     # RViz
     rviz_config_file = (
-        get_package_share_directory("uclv_hello_moveit") + "/launch/move_group_demo.rviz"
+        get_package_share_directory("uclv_hello_moveit") + "/launch/demo_panda.rviz"
     )
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
-        name="rviz2",
         output="log",
         arguments=["-d", rviz_config_file],
         parameters=[
@@ -47,12 +43,12 @@ def generate_launch_description():
     )
 
     # Static TF
-    static_tf_world = Node(
+    static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        name="static_transform_publisher_world",
+        name="static_transform_publisher",
         output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
+        arguments=["--frame-id", "world", "--child-frame-id", "panda_link0"],
     )
 
     # Publish TF
@@ -73,7 +69,10 @@ def generate_launch_description():
     ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[moveit_config.robot_description, ros2_controllers_path],
+        parameters=[ros2_controllers_path],
+        remappings=[
+            ("/controller_manager/robot_description", "/robot_description"),
+        ],
         output="both",
     )
 
@@ -95,7 +94,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             rviz_node,
-            static_tf_world,
+            static_tf,
             robot_state_publisher,
             run_move_group_node,
             ros2_control_node,

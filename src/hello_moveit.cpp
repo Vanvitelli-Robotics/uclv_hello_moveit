@@ -1,7 +1,7 @@
 #include <memory>
 
 #include <rclcpp/rclcpp.hpp>
-#include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/move_group_interface/move_group_interface.hpp>
 
 int main(int argc, char* argv[])
 {
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
   // which allows us to plan and execute trajectories.
   // The first parameter is the node, the second parameter is the group to use
   using moveit::planning_interface::MoveGroupInterface;
-  auto move_group_interface = MoveGroupInterface(node, "panda_arm");
+  auto move_group_interface = MoveGroupInterface(node, "manipulator");
 
   // Set a target Pose
   // Here we use 'lambda functions' for 
